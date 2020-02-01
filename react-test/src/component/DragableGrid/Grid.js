@@ -40,7 +40,7 @@ const Grid = (props) => {
     }
     return (
         <>
-            <Layout.Content style={{ padding: '0 50px' }}>
+            <Layout.Content style={{ padding: '10px 50px' }}>
                 {cards.map((card, i) => renderCard(card, i))}
             </Layout.Content>
         </>

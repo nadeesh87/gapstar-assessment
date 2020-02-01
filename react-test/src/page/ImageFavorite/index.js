@@ -5,6 +5,7 @@ import _ from "lodash";
 import Grid from '../../component/DragableGrid/Grid'
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
+import { Layout, Divider, Button } from 'antd';
 
 class ImageFavorite extends Component {
 
@@ -18,17 +19,24 @@ class ImageFavorite extends Component {
     }
 
     handleOnClick = async (e) => {
-        const { history, images, onAddToFavorite } = this.props;
-        const favoriteImages = _.filter(images, { 'isSelected': true });
-        await onAddToFavorite(favoriteImages);
-        history.push('/images/favorite');
+        const { selectedImages } = this.props;
+        actions.saveFavoriteImages(selectedImages);
     }
 
     render() {
         return (
-            <DndProvider backend={Backend}>
-                <Grid images={this.props.selectedImages} updateOrder={this.props.onAddToFavorite} />
-            </DndProvider>
+            <Layout.Content>
+                <DndProvider backend={Backend}>
+                    <Grid images={this.props.selectedImages} updateOrder={this.props.onAddToFavorite} />
+                </DndProvider>
+                <Divider clearing />
+                <div style={{ background: '#fff', textAlign: 'center' }}>
+                    <Button
+                        type="primary"
+                        onClick={this.handleOnClick}
+                    >Save</Button>
+                </div>
+            </Layout.Content>
         );
     }
 }
@@ -41,8 +49,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onRetrieveImages: () => dispatch(actions.retrieveUploadedImages()),
-        onSelectImages: (index) => dispatch(actions.onSelectImages(index)),
+        //onSaveFavoriteImages: (images) => dispatch(actions.saveFavoriteImages(images)),
         onAddToFavorite: (images) => dispatch(actions.addToFavorite(images)),
+
     }
 }
 

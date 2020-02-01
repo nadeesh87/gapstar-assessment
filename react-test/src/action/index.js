@@ -1,6 +1,7 @@
 export {
     retrieveUploadedImages,
     onSelectImages,
-    addToFavorite
+    addToFavorite,
+    saveFavoriteImages
 }
     from './images';

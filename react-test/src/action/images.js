@@ -1,6 +1,8 @@
 import axios from 'axios';
 import * as actionTypes from './types';
 import { message } from 'antd';
+import base from '../api/base';
+import api from '../api/endpoints';
 
 export const retrieveUploadedImages = () => {
     return (dispatch, getstate) => {
@@ -13,6 +15,17 @@ export const retrieveUploadedImages = () => {
             }
         }).catch((e) => { message.error('Error in retrieving images', 3); });
     }
+}
+export const saveFavoriteImages = (images) => {
+    debugger
+    axios.post(base.BASE_URL.concat(api.addToFavoriteImages), { images: images }).then((res) => {
+        if (res) {
+            message.success(res.data);
+        }
+        else {
+            message.error('Error in updating images');
+        }
+    }).catch((e) => { message.error('Error in updating images', 3); });
 }
 
 export const addToFavorite = (res) => {

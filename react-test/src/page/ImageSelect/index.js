@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Gallery from 'react-grid-gallery';
-import { Layout, Button, Divider } from 'antd';
+import { Layout, Button, Divider, message } from 'antd';
 import * as actions from "../../action";
 import { connect } from 'react-redux';
 import _ from "lodash";
@@ -13,15 +13,25 @@ class ImageSelect extends Component {
     }
 
     handleImageSelect = (e) => {
-        console.log(this.props.images[e])
-        this.props.onSelectImages(e);
+        debugger
+        const { images } = this.props;
+        const favoriteImages = this.getFavoriteImages(images);
+
+        if (images[e].isSelected || favoriteImages.length < 9)
+            this.props.onSelectImages(e);
+        else
+            message.warning('You have already added nine favorites')
     }
 
     handleOnClick = async (e) => {
         const { history, images, onAddToFavorite } = this.props;
-        const favoriteImages = _.filter(images, { 'isSelected': true });
+        const favoriteImages = this.getFavoriteImages(images);
         await onAddToFavorite(favoriteImages);
         history.push('/images/favorite');
+    }
+
+    getFavoriteImages = (images) => {
+        return _.filter(images, { 'isSelected': true });
     }
 
     render() {
